@@ -18,7 +18,7 @@ const Navbar = () => {
       </Link>
       <Link className="navbar__btn" to="/cart">
         <button className="cart-btn">
-          ${totalPrice}
+          ₹{totalPrice}
           <RiShoppingCartLine />({totalCount})
         </button>
       </Link>
