@@ -9,7 +9,7 @@ import { SearchContext } from "../App";
 import { useSelector, useDispatch } from "react-redux";
 import { setCategoryId, setFilters } from "../store/slices/FilterSlice";
 import { list } from "../components/Sort";
-
+import plantData from "../data/data.json";
 const Home = () => {
   const navigate = useNavigate();
   const categoryId = useSelector((state) => state.filter.categoryId);
@@ -22,18 +22,38 @@ const Home = () => {
   const [isLoading, setIsLoading] = useState(true);
   const { search } = useContext(SearchContext);
 
-  const categoryParam = categoryId > 0 ? `category=${categoryId}` : "";
-  const sortParam = sortType;
-  const searchParam = search ? `&search=${search}` : "";
-
-  const fetchData = async () => {
+  const fetchData = () => {
     setIsLoading(true);
-    const res = await fetch(
-      `https://628cbf62a3fd714fd0389a06.mockapi.io/items?${categoryParam}&sortBy=${sortParam}&order=desc${searchParam}`
-    );
-    const data = await res.json();
-    setDataShop(data);
-    setIsLoading(false);
+    try {
+      let filteredData = plantData;
+
+      // Apply category filter
+      if (categoryId > 0) {
+        filteredData = filteredData.filter(
+          (item) => item.category === categoryId
+        );
+      }
+
+      // Apply search filter
+      if (search) {
+        filteredData = filteredData.filter((item) =>
+          item.title.toLowerCase().includes(search.toLowerCase())
+        );
+      }
+
+      // Apply sorting
+      if (sortType === "price") {
+        filteredData.sort((a, b) => a.price - b.price);
+      } else if (sortType === "rating") {
+        filteredData.sort((a, b) => b.rating - a.rating);
+      }
+
+      setDataShop(filteredData);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   useEffect(() => {
@@ -48,7 +68,7 @@ const Home = () => {
       );
       isSearched.current = true;
     }
-  }, []);
+  }, [dispatch]);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -70,7 +90,7 @@ const Home = () => {
       navigate(`?${queryStr}`);
     }
     isMounted.current = true;
-  }, [categoryId, sortType, search]);
+  }, [categoryId, sortType, search, navigate]);
 
   return (
     <>

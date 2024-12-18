@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { addProduct } from "../store/slices/CartSlice";
+import { useNavigate } from "react-router-dom";
 
 const Card = ({ id, imageUrl, title, sizes, price }) => {
   const [activeSize, setActiveSize] = useState(0);
@@ -22,6 +23,11 @@ const Card = ({ id, imageUrl, title, sizes, price }) => {
     dispatch(addProduct(item));
   };
 
+  const navigate = useNavigate();
+  const handleClick = () => {
+    navigate(`/plant/${id}`);
+  };
+
   return (
     <div className="card">
       <img className="card__img" src={imageUrl} alt={title} />
@@ -37,10 +43,18 @@ const Card = ({ id, imageUrl, title, sizes, price }) => {
           </p>
         ))}
       </div>
-      <div className="card__actions">
+      <div style={{ alignItems: "center" }}>
         <p className="card__actions__price">From {price}</p>
-        <button className="cart-btn cart-btn--action" onClick={addItem}>
+
+        <button
+          className="cart-btn cart-btn--action"
+          onClick={addItem}
+          style={{ margin: "10px" }}
+        >
           Add to cart {addedItems > 0 && <span>{addedItems}</span>}{" "}
+        </button>
+        <button className="cart-btn cart-btn--action" onClick={handleClick}>
+          View More
         </button>
       </div>
     </div>
