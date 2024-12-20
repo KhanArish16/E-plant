@@ -129,11 +129,13 @@ const CartPage = () => {
               />
             </svg>
             <Link to="/">
-              <span>Go back</span>
+              <span style={{ color: "white" }}>Go back</span>
             </Link>
           </a>
-          <div className="pay-btn">
-            <span>Pay now</span>
+          <div className="pay-btn button button--outline button--add go-back-btn">
+            <Link to="/formSubmission">
+              <span style={{ color: "white" }}>Enquiry now</span>
+            </Link>
           </div>
         </div>
       </div>

@@ -43,6 +43,7 @@ import NotFound from "./pages/NotFound";
 import { createContext } from "react";
 import Store from "./components/Store";
 import PlantDetail from "./components/PlantDetail";
+import Form from "./components/Form";
 
 export const SearchContext = createContext("");
 
@@ -64,6 +65,7 @@ function App() {
               {/* Route for plant details */}
               <Route path="/not-found" element={<NotFound />} />
               <Route path="/*" element={<NotFound />} />
+              <Route path="/formSubmission" element={<Form />} />
             </Routes>
           </div>
         </div>
